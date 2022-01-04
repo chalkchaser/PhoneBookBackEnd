@@ -1,0 +1,27 @@
+{
+  "name": "phonebookbackend",
+  "version": "0.0.1",
+  "description": "Backend of a Phonebook",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalkchaser/PhoneBookBackEnd.git"
+  },
+  "author": "chalkchaser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chalkchaser/PhoneBookBackEnd/issues"
+  },
+  "homepage": "https://github.com/chalkchaser/PhoneBookBackEnd#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
