@@ -10,15 +10,24 @@ const app = express()
 
 const Person = require('./models/person')
 
-
-
-
 app.use(express.static('build'))
-
-
 app.use(cors())
-
 app.use(express.json())
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// this has to be the last loaded middleware.
+app.use(errorHandler)
+
+
 
 morgan.token('test',function(request, response){
   return request.body
@@ -81,13 +90,12 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(persons => persons.id !== id)
-
-    response.status(204).end()
+    Person.findByIdAndRemove(request.params.id)
+    .then(result => response.status(204).end())
+  
 })
 
-app.post('/api/persons', (request, response) =>{
+app.post('/api/persons', (request, response, next) =>{
     const body = request.body
 
     
@@ -114,12 +122,12 @@ app.post('/api/persons', (request, response) =>{
         number: body.number
     })
     person.save().then(savedPerson =>
-      response.json(savedPerson))
+      response.json(savedPerson)).catch(error => next())
 
-    //persons = persons.concat(person)
-   
-
+  
 })
+
+
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () =>{
